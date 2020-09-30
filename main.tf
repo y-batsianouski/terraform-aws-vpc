@@ -77,9 +77,18 @@ locals {
   database_route_table_single         = var.database_route_table_separate == false && ((var.database_enable_nat_gateway_route && local.nat_gateway_count == 1) || var.database_enable_public_route || (var.database_enable_nat_gateway_route == false && var.database_enable_public_route == false)) ? true : false
   database_route_table_num            = local.database_route_table_use_public_rt || local.database_route_table_use_private_rt ? 0 : local.database_route_table_single ? 1 : length(var.database_cidrs)
   database_nat_gateways_ids = var.database_route_table_create && var.database_enable_nat_gateway_route && var.database_enable_public_route == false && length(local.nat_gateway_selected_azs) > 0 ? [
-    for az in local.database_azs : element(
+    for az in local.database_azs : contains(local.nat_gateway_azs, az) ? element(
       aws_nat_gateway.this.*.id,
-      contains(local.nat_gateway_azs, az) ? index(local.nat_gateway_azs, az) : index(local.database_azs, az)
+      index(local.nat_gateway_azs, az)
+      ) : element(
+      [
+        for i in matchkeys(
+          range(length(local.nat_gateway_azs)),
+          local.nat_gateway_azs,
+          [for az in local.nat_gateway_azs : az if ! contains(local.database_azs, az)]
+        ) : element(aws_nat_gateway.this.*.id, i)
+      ],
+      index(local.database_azs, az)
     )
   ] : []
 
@@ -89,9 +98,18 @@ locals {
   elasticache_route_table_single         = var.elasticache_route_table_separate == false && ((var.elasticache_enable_nat_gateway_route && local.nat_gateway_count == 1) || var.elasticache_enable_public_route || (var.elasticache_enable_nat_gateway_route == false && var.elasticache_enable_public_route == false)) ? true : false
   elasticache_route_table_num            = local.elasticache_route_table_use_public_rt || local.elasticache_route_table_use_private_rt ? 0 : local.elasticache_route_table_single ? 1 : length(var.elasticache_cidrs)
   elasticache_nat_gateways_ids = var.elasticache_route_table_create && var.elasticache_enable_nat_gateway_route && var.elasticache_enable_public_route == false && length(local.nat_gateway_selected_azs) > 0 ? [
-    for az in local.elasticache_azs : element(
+    for az in local.elasticache_azs : contains(local.nat_gateway_azs, az) ? element(
       aws_nat_gateway.this.*.id,
-      contains(local.nat_gateway_azs, az) ? index(local.nat_gateway_azs, az) : index(local.elasticache_azs, az)
+      index(local.nat_gateway_azs, az)
+      ) : element(
+      [
+        for i in matchkeys(
+          range(length(local.nat_gateway_azs)),
+          local.nat_gateway_azs,
+          [for az in local.nat_gateway_azs : az if ! contains(local.elasticache_azs, az)]
+        ) : element(aws_nat_gateway.this.*.id, i)
+      ],
+      index(local.elasticache_azs, az)
     )
   ] : []
 
@@ -101,9 +119,18 @@ locals {
   redshift_route_table_single         = var.redshift_route_table_separate == false && ((var.redshift_enable_nat_gateway_route && local.nat_gateway_count == 1) || var.redshift_enable_public_route || (var.redshift_enable_nat_gateway_route == false && var.redshift_enable_public_route == false)) ? true : false
   redshift_route_table_num            = local.redshift_route_table_use_public_rt || local.redshift_route_table_use_private_rt ? 0 : local.redshift_route_table_single ? 1 : length(var.redshift_cidrs)
   redshift_nat_gateways_ids = var.redshift_route_table_create && var.redshift_enable_nat_gateway_route && var.redshift_enable_public_route == false && length(local.nat_gateway_selected_azs) > 0 ? [
-    for az in local.redshift_azs : element(
+    for az in local.redshift_azs : contains(local.nat_gateway_azs, az) ? element(
       aws_nat_gateway.this.*.id,
-      contains(local.nat_gateway_azs, az) ? index(local.nat_gateway_azs, az) : index(local.redshift_azs, az)
+      index(local.nat_gateway_azs, az)
+      ) : element(
+      [
+        for i in matchkeys(
+          range(length(local.nat_gateway_azs)),
+          local.nat_gateway_azs,
+          [for az in local.nat_gateway_azs : az if ! contains(local.redshift_azs, az)]
+        ) : element(aws_nat_gateway.this.*.id, i)
+      ],
+      index(local.redshift_azs, az)
     )
   ] : []
 
@@ -113,9 +140,18 @@ locals {
   elasticsearch_route_table_single         = var.elasticsearch_route_table_separate == false && ((var.elasticsearch_enable_nat_gateway_route && local.nat_gateway_count == 1) || var.elasticsearch_enable_public_route || (var.elasticsearch_enable_nat_gateway_route == false && var.elasticsearch_enable_public_route == false)) ? true : false
   elasticsearch_route_table_num            = local.elasticsearch_route_table_use_public_rt || local.elasticsearch_route_table_use_private_rt ? 0 : local.elasticsearch_route_table_single ? 1 : length(var.elasticsearch_cidrs)
   elasticsearch_nat_gateways_ids = var.elasticsearch_route_table_create && var.elasticsearch_enable_nat_gateway_route && var.elasticsearch_enable_public_route == false && length(local.nat_gateway_selected_azs) > 0 ? [
-    for az in local.elasticsearch_azs : element(
+    for az in local.elasticsearch_azs : contains(local.nat_gateway_azs, az) ? element(
       aws_nat_gateway.this.*.id,
-      contains(local.nat_gateway_azs, az) ? index(local.nat_gateway_azs, az) : index(local.elasticsearch_azs, az)
+      index(local.nat_gateway_azs, az)
+      ) : element(
+      [
+        for i in matchkeys(
+          range(length(local.nat_gateway_azs)),
+          local.nat_gateway_azs,
+          [for az in local.nat_gateway_azs : az if ! contains(local.elasticsearch_azs, az)]
+        ) : element(aws_nat_gateway.this.*.id, i)
+      ],
+      index(local.elasticsearch_azs, az)
     )
   ] : []
 
@@ -123,9 +159,18 @@ locals {
   custom1_route_table_single = var.custom1_route_table_separate ? false : true
   custom1_route_table_num    = length(var.custom1_route_table_ids) > 0 ? length(var.custom1_route_table_ids) : local.custom1_create ? var.custom1_route_table_separate ? length(var.custom1_cidrs) : 1 : 0
   custom1_nat_gateways_ids = var.custom1_route_table_create && var.custom1_enable_nat_gateway_route && var.custom1_enable_public_route == false && length(local.nat_gateway_selected_azs) > 0 ? [
-    for az in local.custom1_azs : element(
+    for az in local.custom1_azs : contains(local.nat_gateway_azs, az) ? element(
       aws_nat_gateway.this.*.id,
-      contains(local.nat_gateway_azs, az) ? index(local.nat_gateway_azs, az) : index(local.custom1_azs, az)
+      index(local.nat_gateway_azs, az)
+      ) : element(
+      [
+        for i in matchkeys(
+          range(length(local.nat_gateway_azs)),
+          local.nat_gateway_azs,
+          [for az in local.nat_gateway_azs : az if ! contains(local.custom1_azs, az)]
+        ) : element(aws_nat_gateway.this.*.id, i)
+      ],
+      index(local.custom1_azs, az)
     )
   ] : []
 
@@ -133,9 +178,18 @@ locals {
   custom2_route_table_single = var.custom2_route_table_separate ? false : true
   custom2_route_table_num    = length(var.custom2_route_table_ids) > 0 ? length(var.custom2_route_table_ids) : local.custom2_create ? var.custom2_route_table_separate ? length(var.custom2_cidrs) : 1 : 0
   custom2_nat_gateways_ids = var.custom2_route_table_create && var.custom2_enable_nat_gateway_route && var.custom2_enable_public_route == false && length(local.nat_gateway_selected_azs) > 0 ? [
-    for az in local.custom2_azs : element(
+    for az in local.custom2_azs : contains(local.nat_gateway_azs, az) ? element(
       aws_nat_gateway.this.*.id,
-      contains(local.nat_gateway_azs, az) ? index(local.nat_gateway_azs, az) : index(local.custom2_azs, az)
+      index(local.nat_gateway_azs, az)
+      ) : element(
+      [
+        for i in matchkeys(
+          range(length(local.nat_gateway_azs)),
+          local.nat_gateway_azs,
+          [for az in local.nat_gateway_azs : az if ! contains(local.custom2_azs, az)]
+        ) : element(aws_nat_gateway.this.*.id, i)
+      ],
+      index(local.custom2_azs, az)
     )
   ] : []
 
@@ -143,9 +197,18 @@ locals {
   custom3_route_table_single = var.custom3_route_table_separate ? false : true
   custom3_route_table_num    = length(var.custom3_route_table_ids) > 0 ? length(var.custom3_route_table_ids) : local.custom3_create ? var.custom3_route_table_separate ? length(var.custom3_cidrs) : 1 : 0
   custom3_nat_gateways_ids = var.custom3_route_table_create && var.custom3_enable_nat_gateway_route && var.custom3_enable_public_route == false && length(local.nat_gateway_selected_azs) > 0 ? [
-    for az in local.custom3_azs : element(
+    for az in local.custom3_azs : contains(local.nat_gateway_azs, az) ? element(
       aws_nat_gateway.this.*.id,
-      contains(local.nat_gateway_azs, az) ? index(local.nat_gateway_azs, az) : index(local.custom3_azs, az)
+      index(local.nat_gateway_azs, az)
+      ) : element(
+      [
+        for i in matchkeys(
+          range(length(local.nat_gateway_azs)),
+          local.nat_gateway_azs,
+          [for az in local.nat_gateway_azs : az if ! contains(local.custom3_azs, az)]
+        ) : element(aws_nat_gateway.this.*.id, i)
+      ],
+      index(local.custom3_azs, az)
     )
   ] : []
 
