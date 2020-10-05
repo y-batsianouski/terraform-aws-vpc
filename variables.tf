@@ -647,6 +647,12 @@ variable "private_db_subnet_group_description" {
   default     = ""
 }
 
+variable "private_db_subnet_group_azs" {
+  description = "Limit db subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
+}
+
 variable "private_db_subnet_group_tags" {
   description = "Map of additional tags to add to RDS DB subnet group"
   type        = map(string)
@@ -671,6 +677,12 @@ variable "private_elasticache_subnet_group_description" {
   default     = ""
 }
 
+variable "private_elasticache_subnet_group_azs" {
+  description = "Limit elasticache subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
+}
+
 variable "private_redshift_subnet_group_create" {
   description = "Create ElastiCache subnet group for private subnets"
   type        = bool
@@ -687,6 +699,12 @@ variable "private_redshift_subnet_group_description" {
   description = "Override auto-generated ElastiCache subnet group description"
   type        = string
   default     = ""
+}
+
+variable "private_redshift_subnet_group_azs" {
+  description = "Limit redshift subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
 }
 
 variable "private_redshift_subnet_group_tags" {
@@ -961,6 +979,12 @@ variable "database_db_subnet_group_description" {
   default     = ""
 }
 
+variable "database_db_subnet_group_azs" {
+  description = "Limit db subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
+}
+
 variable "database_db_subnet_group_tags" {
   description = "Map of additional tags to add to RDS DB subnet group"
   type        = map(string)
@@ -1133,6 +1157,12 @@ variable "elasticache_elasticache_subnet_group_description" {
   default     = ""
 }
 
+variable "elasticache_elasticache_subnet_group_azs" {
+  description = "Limit elasticache subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
+}
+
 variable "elasticache_tags" {
   description = "Map with additional tags to add to elasticache subnets"
   type        = map(string)
@@ -1297,6 +1327,12 @@ variable "redshift_redshift_subnet_group_description" {
   description = "Override auto-generated Redshift subnet group description"
   type        = string
   default     = ""
+}
+
+variable "redshift_redshift_subnet_group_azs" {
+  description = "Limit redshift subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
 }
 
 variable "redshift_redshift_subnet_group_tags" {
@@ -1625,6 +1661,12 @@ variable "custom1_db_subnet_group_description" {
   default     = ""
 }
 
+variable "custom1_db_subnet_group_azs" {
+  description = "Limit db subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
+}
+
 variable "custom1_db_subnet_group_tags" {
   description = "Map of additional tags to add to RDS DB subnet group"
   type        = map(string)
@@ -1649,6 +1691,12 @@ variable "custom1_elasticache_subnet_group_description" {
   default     = ""
 }
 
+variable "custom1_elasticache_subnet_group_azs" {
+  description = "Limit elasticache subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
+}
+
 variable "custom1_redshift_subnet_group_create" {
   description = "Create ElastiCache subnet group for custom1 subnets"
   type        = bool
@@ -1665,6 +1713,12 @@ variable "custom1_redshift_subnet_group_description" {
   description = "Override auto-generated ElastiCache subnet group description"
   type        = string
   default     = ""
+}
+
+variable "custom1_redshift_subnet_group_azs" {
+  description = "Limit redshift subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
 }
 
 variable "custom1_redshift_subnet_group_tags" {
@@ -1845,6 +1899,12 @@ variable "custom2_db_subnet_group_description" {
   default     = ""
 }
 
+variable "custom2_db_subnet_group_azs" {
+  description = "Limit db subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
+}
+
 variable "custom2_db_subnet_group_tags" {
   description = "Map of additional tags to add to RDS DB subnet group"
   type        = map(string)
@@ -1869,6 +1929,12 @@ variable "custom2_elasticache_subnet_group_description" {
   default     = ""
 }
 
+variable "custom2_elasticache_subnet_group_azs" {
+  description = "Limit elasticache subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
+}
+
 variable "custom2_redshift_subnet_group_create" {
   description = "Create ElastiCache subnet group for custom2 subnets"
   type        = bool
@@ -1885,6 +1951,12 @@ variable "custom2_redshift_subnet_group_description" {
   description = "Override auto-generated ElastiCache subnet group description"
   type        = string
   default     = ""
+}
+
+variable "custom2_redshift_subnet_group_azs" {
+  description = "Limit redshift subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
 }
 
 variable "custom2_redshift_subnet_group_tags" {
@@ -2065,6 +2137,12 @@ variable "custom3_db_subnet_group_description" {
   default     = ""
 }
 
+variable "custom3_db_subnet_group_azs" {
+  description = "Limit db subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
+}
+
 variable "custom3_db_subnet_group_tags" {
   description = "Map of additional tags to add to RDS DB subnet group"
   type        = map(string)
@@ -2089,6 +2167,12 @@ variable "custom3_elasticache_subnet_group_description" {
   default     = ""
 }
 
+variable "custom3_elasticache_subnet_group_azs" {
+  description = "Limit elasticache subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
+}
+
 variable "custom3_redshift_subnet_group_create" {
   description = "Create ElastiCache subnet group for custom3 subnets"
   type        = bool
@@ -2105,6 +2189,12 @@ variable "custom3_redshift_subnet_group_description" {
   description = "Override auto-generated ElastiCache subnet group description"
   type        = string
   default     = ""
+}
+
+variable "custom3_redshift_subnet_group_azs" {
+  description = "Limit redshift subnet group only to specific availability zones"
+  type        = list(string)
+  default     = []
 }
 
 variable "custom3_redshift_subnet_group_tags" {

@@ -6,6 +6,27 @@ data "aws_region" "current" {}
 
 locals {
   create = length(var.cidrs) > 0 ? true : false
+  db_subnet_group_subnets = length(var.db_subnet_group_azs) > 0 ? [
+    for i in matchkeys(
+      range(length(var.azs)),
+      var.azs,
+      var.db_subnet_group_azs
+    ) : element(aws_subnet.this.*.id, i)
+  ] : aws_subnet.this.*.id
+  redshift_subnet_group_subnets = length(var.redshift_subnet_group_azs) > 0 ? [
+    for i in matchkeys(
+      range(length(var.azs)),
+      var.azs,
+      var.redshift_subnet_group_azs
+    ) : element(aws_subnet.this.*.id, i)
+  ] : aws_subnet.this.*.id
+  elasticache_subnet_group_subnets = length(var.elasticache_subnet_group_azs) > 0 ? [
+    for i in matchkeys(
+      range(length(var.azs)),
+      var.azs,
+      var.elasticache_subnet_group_azs
+    ) : element(aws_subnet.this.*.id, i)
+  ] : aws_subnet.this.*.id
 }
 
 resource "aws_subnet" "this" {
@@ -183,7 +204,7 @@ resource "aws_db_subnet_group" "database" {
 
   name        = var.db_subnet_group_name != "" ? var.db_subnet_group_name : var.name
   description = var.db_subnet_group_description != "" ? var.db_subnet_group_description : "Database subnet group for ${var.name}"
-  subnet_ids  = aws_subnet.this.*.id
+  subnet_ids  = local.db_subnet_group_subnets
 
   tags = merge(
     { Name = var.name },
@@ -197,7 +218,7 @@ resource "aws_elasticache_subnet_group" "elasticache" {
 
   name        = var.elasticache_subnet_group_name != "" ? var.elasticache_subnet_group_name : var.name
   description = var.elasticache_subnet_group_description != "" ? var.elasticache_subnet_group_description : "ElastiCache subnet group for ${var.name}"
-  subnet_ids  = aws_subnet.this.*.id
+  subnet_ids  = local.elasticache_subnet_group_subnets
 }
 
 resource "aws_redshift_subnet_group" "redshift" {
@@ -205,7 +226,7 @@ resource "aws_redshift_subnet_group" "redshift" {
 
   name        = var.redshift_subnet_group_name != "" ? var.redshift_subnet_group_name : var.name
   description = var.redshift_subnet_group_description != "" ? var.redshift_subnet_group_description : "Redshift subnet group for ${var.name}"
-  subnet_ids  = aws_subnet.this.*.id
+  subnet_ids  = local.redshift_subnet_group_subnets
 
   tags = merge(
     { Name = var.name },

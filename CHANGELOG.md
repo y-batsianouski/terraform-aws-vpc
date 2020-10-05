@@ -11,3 +11,7 @@
 ## 0.1.2
 
 - Add possibility to use only AZ letter in tags instead of full AZ name
+
+## 0.1.3
+
+- Add possibility to specify availability zones for db, elasticache and redshift subnet groups

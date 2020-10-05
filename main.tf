@@ -629,6 +629,7 @@ module "private" {
   )
   db_subnet_group_description = var.private_db_subnet_group_description != "" ? var.private_db_subnet_group_description : "Database subnet group for ${var.name}"
   db_subnet_group_tags        = var.private_db_subnet_group_tags
+  db_subnet_group_azs         = var.private_db_subnet_group_azs
 
   elasticache_subnet_group_create = var.private_elasticache_subnet_group_create
   elasticache_subnet_group_name = var.private_elasticache_subnet_group_name != "" ? var.private_elasticache_subnet_group_name : format(
@@ -638,6 +639,7 @@ module "private" {
     var.private_name_suffix
   )
   elasticache_subnet_group_description = var.private_elasticache_subnet_group_description != "" ? var.private_elasticache_subnet_group_description : "ElastiCache subnet group for ${var.name}"
+  elasticache_subnet_group_azs         = var.private_elasticache_subnet_group_azs
 
   redshift_subnet_group_create = var.private_redshift_subnet_group_create
   redshift_subnet_group_name = var.private_redshift_subnet_group_name != "" ? var.private_redshift_subnet_group_name : format(
@@ -648,6 +650,7 @@ module "private" {
   )
   redshift_subnet_group_description = var.private_redshift_subnet_group_description != "" ? var.private_redshift_subnet_group_description : "Redshift subnet group for ${var.name}"
   redshift_subnet_group_tags        = var.private_redshift_subnet_group_tags
+  redshift_subnet_group_azs         = var.private_redshift_subnet_group_azs
 
   vpn_gateway_id = var.private_route_table_vgw_propagation ? local.vpn_gateway_id : ""
 
@@ -747,6 +750,7 @@ module "database" {
   db_subnet_group_name        = var.database_db_subnet_group_name != "" ? var.database_db_subnet_group_name : var.name
   db_subnet_group_description = var.database_db_subnet_group_description != "" ? var.database_db_subnet_group_description : "Database subnet group for ${var.name}"
   db_subnet_group_tags        = var.database_db_subnet_group_tags
+  db_subnet_group_azs         = var.database_db_subnet_group_azs
 
   vpn_gateway_id = var.database_route_table_vgw_propagation ? local.vpn_gateway_id : ""
 
@@ -800,6 +804,7 @@ module "elasticache" {
   elasticache_subnet_group_create      = var.elasticache_elasticache_subnet_group_create
   elasticache_subnet_group_name        = var.elasticache_elasticache_subnet_group_name != "" ? var.elasticache_elasticache_subnet_group_name : var.name
   elasticache_subnet_group_description = var.elasticache_elasticache_subnet_group_description != "" ? var.elasticache_elasticache_subnet_group_description : "ElastiCache subnet group for ${var.name}"
+  elasticache_subnet_group_azs         = var.elasticache_elasticache_subnet_group_azs
 
   tags            = merge(var.tags, var.elasticache_tags)
   tags_per_subnet = var.elasticache_tags_per_subnet
@@ -852,6 +857,7 @@ module "redshift" {
   redshift_subnet_group_name        = var.redshift_redshift_subnet_group_name != "" ? var.redshift_redshift_subnet_group_name : var.name
   redshift_subnet_group_description = var.redshift_redshift_subnet_group_description != "" ? var.redshift_redshift_subnet_group_description : "Redshift subnet group for ${var.name}"
   redshift_subnet_group_tags        = var.redshift_redshift_subnet_group_tags
+  redshift_subnet_group_azs         = var.redshift_redshift_subnet_group_azs
 
   vpn_gateway_id = var.redshift_route_table_vgw_propagation ? local.vpn_gateway_id : ""
 
@@ -959,6 +965,7 @@ module "custom1" {
   )
   db_subnet_group_description = var.custom1_db_subnet_group_description != "" ? var.custom1_db_subnet_group_description : "Database subnet group for ${var.name}-custom1"
   db_subnet_group_tags        = var.custom1_db_subnet_group_tags
+  db_subnet_group_azs         = var.custom1_db_subnet_group_azs
 
   elasticache_subnet_group_create = var.custom1_elasticache_subnet_group_create
   elasticache_subnet_group_name = var.custom1_elasticache_subnet_group_name != "" ? var.custom1_elasticache_subnet_group_name : format(
@@ -968,6 +975,7 @@ module "custom1" {
     var.custom1_name_suffix
   )
   elasticache_subnet_group_description = var.custom1_elasticache_subnet_group_description != "" ? var.custom1_elasticache_subnet_group_description : "Elasticache subnet group for ${var.name}-custom1"
+  elasticache_subnet_group_azs         = var.custom1_elasticache_subnet_group_azs
 
   redshift_subnet_group_create = var.custom1_redshift_subnet_group_create
   redshift_subnet_group_name = var.custom1_redshift_subnet_group_name != "" ? var.custom1_redshift_subnet_group_name : format(
@@ -978,6 +986,7 @@ module "custom1" {
   )
   redshift_subnet_group_description = var.custom1_redshift_subnet_group_description != "" ? var.custom1_redshift_subnet_group_description : "Redshift subnet group for ${var.name}-custom1"
   redshift_subnet_group_tags        = var.custom1_redshift_subnet_group_tags
+  redshift_subnet_group_azs         = var.custom1_redshift_subnet_group_azs
 
   vpn_gateway_id = var.custom1_route_table_vgw_propagation ? local.vpn_gateway_id : ""
 
@@ -1036,6 +1045,7 @@ module "custom2" {
   )
   db_subnet_group_description = var.custom2_db_subnet_group_description != "" ? var.custom2_db_subnet_group_description : "Database subnet group for ${var.name}-custom2"
   db_subnet_group_tags        = var.custom2_db_subnet_group_tags
+  db_subnet_group_azs         = var.custom2_db_subnet_group_azs
 
   elasticache_subnet_group_create = var.custom2_elasticache_subnet_group_create
   elasticache_subnet_group_name = var.custom2_elasticache_subnet_group_name != "" ? var.custom2_elasticache_subnet_group_name : format(
@@ -1045,6 +1055,7 @@ module "custom2" {
     var.custom2_name_suffix
   )
   elasticache_subnet_group_description = var.custom2_elasticache_subnet_group_description != "" ? var.custom2_elasticache_subnet_group_description : "Elasticache subnet group for ${var.name}-custom2"
+  elasticache_subnet_group_azs         = var.custom2_elasticache_subnet_group_azs
 
   redshift_subnet_group_create = var.custom2_redshift_subnet_group_create
   redshift_subnet_group_name = var.custom2_redshift_subnet_group_name != "" ? var.custom2_redshift_subnet_group_name : format(
@@ -1055,6 +1066,7 @@ module "custom2" {
   )
   redshift_subnet_group_description = var.custom2_redshift_subnet_group_description != "" ? var.custom2_redshift_subnet_group_description : "Redshift subnet group for ${var.name}-custom2"
   redshift_subnet_group_tags        = var.custom2_redshift_subnet_group_tags
+  redshift_subnet_group_azs         = var.custom2_redshift_subnet_group_azs
 
   vpn_gateway_id = var.custom2_route_table_vgw_propagation ? local.vpn_gateway_id : ""
 
@@ -1113,6 +1125,7 @@ module "custom3" {
   )
   db_subnet_group_description = var.custom3_db_subnet_group_description != "" ? var.custom3_db_subnet_group_description : "Database subnet group for ${var.name}-custom3"
   db_subnet_group_tags        = var.custom3_db_subnet_group_tags
+  db_subnet_group_azs         = var.custom3_db_subnet_group_azs
 
   elasticache_subnet_group_create = var.custom3_elasticache_subnet_group_create
   elasticache_subnet_group_name = var.custom3_elasticache_subnet_group_name != "" ? var.custom3_elasticache_subnet_group_name : format(
@@ -1122,6 +1135,7 @@ module "custom3" {
     var.custom3_name_suffix
   )
   elasticache_subnet_group_description = var.custom3_elasticache_subnet_group_description != "" ? var.custom3_elasticache_subnet_group_description : "Elasticache subnet group for ${var.name}-custom3"
+  elasticache_subnet_group_azs         = var.custom3_elasticache_subnet_group_azs
 
   redshift_subnet_group_create = var.custom3_redshift_subnet_group_create
   redshift_subnet_group_name = var.custom3_redshift_subnet_group_name != "" ? var.custom3_redshift_subnet_group_name : format(
@@ -1132,6 +1146,7 @@ module "custom3" {
   )
   redshift_subnet_group_description = var.custom3_redshift_subnet_group_description != "" ? var.custom3_redshift_subnet_group_description : "Redshift subnet group for ${var.name}-custom3"
   redshift_subnet_group_tags        = var.custom3_redshift_subnet_group_tags
+  redshift_subnet_group_azs         = var.custom3_redshift_subnet_group_azs
 
   vpn_gateway_id = var.custom3_route_table_vgw_propagation ? local.vpn_gateway_id : ""
 
