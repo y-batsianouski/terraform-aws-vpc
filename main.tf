@@ -215,6 +215,8 @@ locals {
   vpn_gateway_id = var.vpn_gateway_create ? aws_vpn_gateway.this[0].id : var.vpn_gateway_id
 }
 
+data "aws_region" "current" {}
+
 #####
 # VPC
 #####
@@ -411,7 +413,11 @@ resource "aws_eip" "nat" {
         var.name != "" ? "-" : "",
         var.nat_gateway_eip_name_suffix,
         var.nat_gateway_eip_name_suffix != "" ? "-" : "",
-        element(local.nat_gateway_azs, count.index)
+        var.azs_short_name ? replace(
+          local.nat_gateway_azs[count.index],
+          data.aws_region.current.name,
+          ""
+        ) : local.nat_gateway_azs[count.index]
       )
     },
     var.tags,
@@ -431,7 +437,12 @@ resource "aws_nat_gateway" "this" {
         "%s%s%s",
         var.name,
         var.name != "" ? "-" : "",
-        local.nat_gateway_azs[count.index]
+        var.azs_short_name ? replace(
+          local.nat_gateway_azs[count.index],
+          data.aws_region.current.name,
+          ""
+        ) : local.nat_gateway_azs[count.index]
+
       )
     },
     var.tags,
@@ -541,6 +552,7 @@ module "public" {
 
   vpc_id              = local.vpc_id
   azs                 = local.public_azs
+  azs_short_name      = var.azs_short_name
   cidrs               = var.public_cidrs
   enable_ipv6         = var.enable_ipv6
   vpc_ipv6_cidr_block = var.enable_ipv6 ? aws_vpc.this.ipv6_cidr_block : null
@@ -586,6 +598,7 @@ module "private" {
 
   vpc_id              = local.vpc_id
   azs                 = local.private_azs
+  azs_short_name      = var.azs_short_name
   cidrs               = var.private_cidrs
   enable_ipv6         = var.enable_ipv6
   vpc_ipv6_cidr_block = var.enable_ipv6 ? aws_vpc.this.ipv6_cidr_block : null
@@ -658,6 +671,7 @@ module "intra" {
 
   vpc_id              = local.vpc_id
   azs                 = local.intra_azs
+  azs_short_name      = var.azs_short_name
   cidrs               = var.intra_cidrs
   enable_ipv6         = var.enable_ipv6
   vpc_ipv6_cidr_block = var.enable_ipv6 ? aws_vpc.this.ipv6_cidr_block : null
@@ -702,6 +716,7 @@ module "database" {
 
   vpc_id              = local.vpc_id
   azs                 = local.database_azs
+  azs_short_name      = var.azs_short_name
   cidrs               = var.database_cidrs
   enable_ipv6         = var.enable_ipv6
   vpc_ipv6_cidr_block = var.enable_ipv6 ? aws_vpc.this.ipv6_cidr_block : ""
@@ -755,6 +770,7 @@ module "elasticache" {
 
   vpc_id              = local.vpc_id
   azs                 = local.elasticache_azs
+  azs_short_name      = var.azs_short_name
   cidrs               = var.elasticache_cidrs
   enable_ipv6         = var.enable_ipv6
   vpc_ipv6_cidr_block = var.enable_ipv6 ? aws_vpc.this.ipv6_cidr_block : ""
@@ -805,6 +821,7 @@ module "redshift" {
 
   vpc_id              = local.vpc_id
   azs                 = local.redshift_azs
+  azs_short_name      = var.azs_short_name
   cidrs               = var.redshift_cidrs
   enable_ipv6         = var.enable_ipv6
   vpc_ipv6_cidr_block = var.enable_ipv6 ? aws_vpc.this.ipv6_cidr_block : ""
@@ -858,6 +875,7 @@ module "elasticsearch" {
 
   vpc_id              = local.vpc_id
   azs                 = local.elasticsearch_azs
+  azs_short_name      = var.azs_short_name
   cidrs               = var.elasticsearch_cidrs
   enable_ipv6         = var.enable_ipv6
   vpc_ipv6_cidr_block = var.enable_ipv6 ? aws_vpc.this.ipv6_cidr_block : ""
@@ -906,6 +924,7 @@ module "custom1" {
 
   vpc_id              = local.vpc_id
   azs                 = local.custom1_azs
+  azs_short_name      = var.azs_short_name
   cidrs               = var.custom1_cidrs
   enable_ipv6         = var.enable_ipv6
   vpc_ipv6_cidr_block = var.enable_ipv6 ? aws_vpc.this.ipv6_cidr_block : ""
@@ -982,6 +1001,7 @@ module "custom2" {
 
   vpc_id              = local.vpc_id
   azs                 = local.custom2_azs
+  azs_short_name      = var.azs_short_name
   cidrs               = var.custom2_cidrs
   enable_ipv6         = var.enable_ipv6
   vpc_ipv6_cidr_block = var.enable_ipv6 ? aws_vpc.this.ipv6_cidr_block : ""
@@ -1058,6 +1078,7 @@ module "custom3" {
 
   vpc_id              = local.vpc_id
   azs                 = local.custom3_azs
+  azs_short_name      = var.azs_short_name
   cidrs               = var.custom3_cidrs
   enable_ipv6         = var.enable_ipv6
   vpc_ipv6_cidr_block = var.enable_ipv6 ? aws_vpc.this.ipv6_cidr_block : ""

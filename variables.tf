@@ -13,6 +13,12 @@ variable "azs" {
   type        = list(string)
 }
 
+variable "azs_short_name" {
+  description = "Use only AZ letter in tags instead of full AZ name in per-az resources"
+  type        = bool
+  default     = false
+}
+
 variable "tags" {
   description = "List of tags to be added to all created resources"
   type        = map(string)

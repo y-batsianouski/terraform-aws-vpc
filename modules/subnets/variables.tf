@@ -15,6 +15,12 @@ variable "azs" {
   default     = []
 }
 
+variable "azs_short_name" {
+  description = "Use only AZ letter in tags instead of full AZ name"
+  type        = bool
+  default     = false
+}
+
 variable "cidrs" {
   description = "List of subnet's cidrs"
   type        = list(string)

@@ -1,3 +1,5 @@
+data "aws_region" "current" {}
+
 ########
 # subnet
 ########
@@ -27,7 +29,11 @@ resource "aws_subnet" "this" {
         "%s%s%s",
         var.name,
         var.name != "" ? "-" : "",
-        element(var.azs, count.index),
+        var.azs_short_name ? replace(
+          element(var.azs, count.index),
+          data.aws_region.current.name,
+          ""
+        ) : element(var.azs, count.index),
       )
     },
     var.tags,
@@ -54,7 +60,11 @@ resource "aws_route_table" "this" {
         "%s%s%s",
         var.name,
         var.name != "" ? "-" : "",
-        element(var.azs, count.index),
+        var.azs_short_name ? replace(
+          element(var.azs, count.index),
+          data.aws_region.current.name,
+          ""
+        ) : element(var.azs, count.index),
       )
     },
     var.tags,
