@@ -295,6 +295,7 @@ locals {
 
 data "aws_vpc_endpoint_service" "this" {
   service = local.endpoints[var.endpoint].service
+  service_type = local.endpoints[var.endpoint].vpc_endpoint_type
 }
 
 resource "aws_vpc_endpoint" "this" {
