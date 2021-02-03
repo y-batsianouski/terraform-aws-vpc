@@ -67,7 +67,9 @@ resource "aws_subnet" "this" {
 ##############
 
 locals {
-  route_table_number_to_create = var.route_table_create && length(var.route_table_ids) == 0 ? var.route_table_single ? 1 : length(var.cidrs) : 0
+  route_table_number_to_create  = var.route_table_create && length(var.route_table_ids) == 0 ? var.route_table_single ? 1 : length(var.cidrs) : 0
+  internet_gateway_route_create = local.create == true ? var.internet_gateway_route_create == true ? true : var.internet_gateway_id != "" ? true : false : false
+  nat_gateway_routes_create     = local.create == true && local.internet_gateway_route_create == false ? var.nat_gateway_routes_create == true ? true : length(var.nat_gateways_ids) > 0 ? true : false : false
 }
 
 resource "aws_route_table" "this" {
@@ -95,7 +97,7 @@ resource "aws_route_table" "this" {
 }
 
 resource "aws_route" "internet_gateway" {
-  count = local.create && var.internet_gateway_id != "" ? local.route_table_number_to_create : 0
+  count = local.internet_gateway_route_create ? local.route_table_number_to_create : 0
 
   route_table_id         = element(aws_route_table.this.*.id, count.index)
   destination_cidr_block = "0.0.0.0/0"
@@ -107,7 +109,7 @@ resource "aws_route" "internet_gateway" {
 }
 
 resource "aws_route" "nat_gateway" {
-  count = local.create && var.internet_gateway_id == "" && length(var.nat_gateways_ids) > 0 ? local.route_table_number_to_create : 0
+  count = local.nat_gateway_routes_create == true ? local.route_table_number_to_create : 0
 
   route_table_id         = element(aws_route_table.this.*.id, count.index)
   destination_cidr_block = "0.0.0.0/0"

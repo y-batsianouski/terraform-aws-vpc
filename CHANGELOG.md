@@ -15,3 +15,8 @@
 ## 0.1.3
 
 - Add possibility to specify availability zones for db, elasticache and redshift subnet groups
+
+## 0.1.4
+
+- Fix data_source aws_vpc_endpoint_service multiresult issu in vpc_endpoints module 
+- FIX count issue for internet gateway and nat gateway routes

@@ -558,6 +558,7 @@ module "public" {
   vpc_ipv6_cidr_block = var.enable_ipv6 ? aws_vpc.this.ipv6_cidr_block : null
   ipv6_prefixes       = var.enable_ipv6 ? var.public_ipv6_prefixes : null
 
+  internet_gateway_route_create      = local.internet_gateway_create
   internet_gateway_id                = local.internet_gateway_create ? aws_internet_gateway.this[0].id : null
   egress_only_igw_id                 = local.egress_only_igw_create ? aws_egress_only_internet_gateway.this[0].id : null
   map_public_ip_on_launch            = var.public_map_public_ip_on_launch
@@ -604,8 +605,9 @@ module "private" {
   vpc_ipv6_cidr_block = var.enable_ipv6 ? aws_vpc.this.ipv6_cidr_block : null
   ipv6_prefixes       = var.enable_ipv6 ? var.private_ipv6_prefixes : null
 
-  map_public_ip_on_launch = false
-  nat_gateways_ids        = local.private_nat_gateways_ids
+  map_public_ip_on_launch   = false
+  nat_gateway_routes_create = var.nat_gateway_enable
+  nat_gateways_ids          = local.private_nat_gateways_ids
 
   assign_ipv6_address_on_creation            = var.enable_ipv6 ? var.private_assign_ipv6_address_on_creation : null
   assign_ipv6_address_on_creation_per_subnet = var.enable_ipv6 ? var.private_assign_ipv6_address_on_creation_per_subnet : null

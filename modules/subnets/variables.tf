@@ -44,10 +44,22 @@ variable "ipv6_prefixes" {
   default     = []
 }
 
+variable "nat_gateway_routes_create" {
+  description = "Should nat gateway routes create be create. Set it explicitly to true when you face \"The \"count\" value depends on resource attributes that cannot be determined until apply\" error for aws_route.nat_gateway resource"
+  type        = bool
+  default     = false
+}
+
 variable "nat_gateways_ids" {
   description = "List of NAT gateways IDs to create route in route tables (requires create_route_tables = true)"
   type        = list(string)
   default     = []
+}
+
+variable "internet_gateway_route_create" {
+  description = "Should Internet Gateway route be created or not. Set it explicitly to true when you face \"The \"count\" value depends on resource attributes that cannot be determined until apply\" error for aws_route.internet_gateway resource"
+  type        = bool
+  default     = false
 }
 
 variable "internet_gateway_id" {
@@ -90,6 +102,12 @@ variable "route_table_create" {
   description = "Create route tables for subnets and attach them"
   type        = bool
   default     = true
+}
+
+variable "route_tables_number" {
+  description = "Number of route tables to create. This may be used when you pass into var.route_table_ids dynamic values and count can't be calculated"
+  type        = number
+  default     = -1
 }
 
 variable "route_table_ids" {
